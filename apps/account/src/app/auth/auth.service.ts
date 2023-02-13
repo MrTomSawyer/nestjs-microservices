@@ -1,9 +1,9 @@
+import { AccountRegister } from '@account/contracts';
 import { UserRole } from '@account/interfaces';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserRepository } from '../user/repositories/user.repository';
-import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async register({ email, password, displayName }: RegisterDto) {
+  async register({ email, password, displayName }: AccountRegister.Request) {
     const oldUser = await this.userRepository.findUser(email);
     if (oldUser) {
       throw new Error('Such user has already registered');
@@ -34,7 +34,7 @@ export class AuthService {
       throw new Error('Wrong credentials');
     }
     const userEntity = new UserEntity(user);
-    const isCorrectPassword = await userEntity.validatePasssword(password);
+    const isCorrectPassword = await userEntity.validatePassword(password);
     if (!isCorrectPassword) {
       throw new Error('Wrong credentials');
     }
