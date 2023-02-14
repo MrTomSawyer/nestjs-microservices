@@ -14,8 +14,9 @@ export class AuthService {
 
   async register({ email, password, displayName }: AccountRegister.Request) {
     const oldUser = await this.userRepository.findUser(email);
+    console.log('@', oldUser)
     if (oldUser) {
-      throw new Error('Such user has already registered');
+      throw new Error('Such user has already registered 1');
     }
     const newUserEntity = await new UserEntity({
       displayName,

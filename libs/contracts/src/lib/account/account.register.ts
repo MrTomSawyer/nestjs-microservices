@@ -1,5 +1,4 @@
-import { IsEmail, IsString } from 'class-validator';
-import { IsOptional } from 'class-validator/types/decorator/decorators';
+import { IsEmail, IsString, IsOptional } from 'class-validator';
 
 export namespace AccountRegister {
   export const topic = 'account.register.command'
