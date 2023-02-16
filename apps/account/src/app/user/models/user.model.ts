@@ -8,7 +8,7 @@ export class UserCourses extends Document implements IUserCourses {
   courseId: string;
 
   @Prop({required: true, enum: PurchaseState, type: String})
-  purchase: PurchaseState;
+  purchaseState: PurchaseState;
 }
 
 export const UserCoursesSchema = SchemaFactory.createForClass(UserCourses);

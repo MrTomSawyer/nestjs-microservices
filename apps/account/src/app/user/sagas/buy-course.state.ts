@@ -1,3 +1,4 @@
+import { PaymentStatus } from "@account/contracts";
 import { UserEntity } from "../entities/user.entity";
 import { BuyCourseSaga } from "./buy-course.saga";
 
@@ -9,6 +10,6 @@ export abstract class BuyCourseSagaState {
   }
 
   public abstract pay(): Promise<{ paymentLink: string, user: UserEntity }>
-  public abstract chackPayment(): Promise<{ user: UserEntity }>
-  public abstract cansel(): Promise<{ user: UserEntity }>
+  public abstract checkPayment(): Promise<{ user: UserEntity, status: PaymentStatus }>
+  public abstract cancel(): Promise<{ user: UserEntity }>
 }
