@@ -5,7 +5,7 @@ import { BuyCourseSagaState } from "./buy-course.state"
 
 export class BuyCourseSagaStateStarted extends BuyCourseSagaState {
   public async pay(): Promise<{ paymentLink: string; user: UserEntity; }> {
-    const { course } = await this.saga.rqmService.send<CourseGetCourse.Request, CourseGetCourse.Response>(CourseGetCourse.topic, { id: this.saga.courseId });
+    const { course } = await this.saga.rmqService.send<CourseGetCourse.Request, CourseGetCourse.Response>(CourseGetCourse.topic, { id: this.saga.courseId });
     if (!course) {
       throw new Error('Such course does not exist');
     }
@@ -13,7 +13,7 @@ export class BuyCourseSagaStateStarted extends BuyCourseSagaState {
       this.saga.setState(PurchaseState.Purchased, this.saga.courseId);
       return { paymentLink: null, user: this.saga.user };
     }
-    const { paymentLink } = await this.saga.rqmService.send<PaymentGenerateLink.Request, PaymentGenerateLink.Response>(PaymentGenerateLink.topic, {
+    const { paymentLink } = await this.saga.rmqService.send<PaymentGenerateLink.Request, PaymentGenerateLink.Response>(PaymentGenerateLink.topic, {
       courseId: course._id,
       userId: this.saga.user._id,
       sum: course.price
@@ -37,7 +37,7 @@ export class BuyCourseSagaStateWaitingForPayment extends BuyCourseSagaState {
     throw new Error("You can't create a payment link while the payment is already in process");
   }
   public async checkPayment(): Promise<{ user: UserEntity; status: PaymentStatus }> {
-    const { status } = await this.saga.rqmService.send<PaymentCheck.Request, PaymentCheck.Response>(PaymentCheck.topic, {
+    const { status } = await this.saga.rmqService.send<PaymentCheck.Request, PaymentCheck.Response>(PaymentCheck.topic, {
       userId: this.saga.user._id,
       courseId: this.saga.courseId
     })
@@ -45,8 +45,8 @@ export class BuyCourseSagaStateWaitingForPayment extends BuyCourseSagaState {
       this.saga.setState(PurchaseState.Cancelled, this.saga.courseId);
       return { user: this.saga.user, status: PaymentStatus.Canceled }
     }
-    if (status !== PaymentStatus.Success) {
-      return { user: this.saga.user, status }
+    if (status === PaymentStatus.Success) {
+      return { user: this.saga.user, status: PaymentStatus.Success }
     }
     this.saga.setState(PurchaseState.Purchased, this.saga.courseId);
     return { user: this.saga.user, status: PaymentStatus.InProgress}
