@@ -1,4 +1,5 @@
-import { IUser, IUserCourses, PurchaseState, UserRole } from "@account/interfaces";
+import { AccountChangeCourse } from "@account/contracts";
+import { IDomainEvent, IUser, IUserCourses, PurchaseState, UserRole } from "@account/interfaces";
 import { compare, genSalt, hash } from "bcrypt";
 
 export class UserEntity implements IUser {
@@ -8,6 +9,7 @@ export class UserEntity implements IUser {
   passwordHash: string;
   role: UserRole;
   courses: IUserCourses[];
+  events: IDomainEvent[] = [];
 
   constructor(user: IUser) {
     this._id = user._id;
@@ -37,6 +39,10 @@ export class UserEntity implements IUser {
       }
       return course;
     })
+    this.events.push({
+      topic: AccountChangeCourse.topic,
+      data: { courseId, userId: this._id, state }
+    });
     return this;
   }
 
