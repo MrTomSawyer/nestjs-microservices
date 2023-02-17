@@ -19,5 +19,5 @@ Sagas can be found in ```/apps/account/src/app/user/sagas```
 ## Tech
 - [NestJS](https://nestjs.com/) as the most progressive NodJS framework;
 - [MongoDB](https://www.mongodb.com/) for data storage;
-- [RabbitMQ](https://www.rabbitmq.com/) RabbitMQ as nearly the most popular message broker;
+- [RabbitMQ](https://www.rabbitmq.com/) as nearly the most popular message broker;
 - [Nx Monorepo](https://nx.dev) because why not?
