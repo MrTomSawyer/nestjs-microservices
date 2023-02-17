@@ -21,7 +21,7 @@ export class UserQueries {
   }
 
   @RMQValidate()
-  @RMQRoute(AccountUserInfo.topic)
+  @RMQRoute(AccountUserCourses.topic)
   async userCourses({ id }: AccountUserCourses.Request): Promise<AccountUserCourses.Response> {
     const user =  await this.userRepository.findUserById(id);
     return {
