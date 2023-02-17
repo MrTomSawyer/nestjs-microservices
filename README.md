@@ -1,8 +1,8 @@
 # NestJS mircoservices
 
-This project represents a backend for some alleged online school. It is split into microservices which communication is fully asyncronous and uses RabbitMQ as transport layer.
+This project represents a backend for some alleged online school. It is split into microservices which communication is fully asyncronous and uses ```RabbitMQ``` as transport layer.
 
-This application also follows CQRS (Command Query Responsibility Segregation) pattern for a better backend design.
+This application also follows ```CQRS``` (Command Query Responsibility Segregation) pattern for a better backend design.
 
 ## Brief overview
 The following schema illustrates 2 microservices: API Gateway, Accounts and any possible relations between them:
@@ -19,4 +19,4 @@ Sagas can be found in ```/apps/account/src/app/user/sagas```
 ## Tech
 - [NestJS](https://nestjs.com/) as the most progressive NodJS framework;
 - [MongoDB](https://www.mongodb.com/) for data storage;
-- [RabbitMQ](https://www.mongodb.com/) RabbitMQ as nearly the most popular message broker;
+- [RabbitMQ](https://www.rabbitmq.com/) RabbitMQ as nearly the most popular message broker;
