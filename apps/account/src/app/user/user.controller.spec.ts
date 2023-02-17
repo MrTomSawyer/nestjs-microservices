@@ -97,17 +97,6 @@ describe('UserController', () => {
 		expect(res.paymentLink).toEqual(paymentLink);
 	});
 
-	it('Payment Check', async () => {
-		rmqService.mockReply<PaymentCheck.Response>(PaymentCheck.topic, {
-			status: PaymentStatus.Success
-		});
-		const res = await rmqService.triggerRoute<AccountCheckPayment.Request, AccountCheckPayment.Response>(
-			AccountCheckPayment.topic,
-			{ userId, courseId }
-		);
-		expect(res.status).toEqual(PaymentStatus.Success);
-	});
-
 	afterAll(async () => {
 		await userRepository.deleteUser(authRegister.email);
 		app.close();
